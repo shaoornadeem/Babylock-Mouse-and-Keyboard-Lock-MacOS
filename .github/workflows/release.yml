@@ -1,0 +1,26 @@
+name: Auto Release
+
+on:
+  push:
+    tags:
+      - 'v*' # Triggers action when you push a tag like v1.1.0
+
+jobs:
+  release:
+    runs-on: macos-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # Note: Since you have build.sh and package_dmg.sh, you can optionally 
+      # add a step here to run those scripts and generate the .dmg freshly 
+      # instead of committing the .dmg directly to your repository.
+
+      - name: Create Release and Upload DMG
+        uses: softprops/action-gh-release@v2
+        with:
+          files: BabyLock-*.dmg # Automatically grabs any .dmg in the root directory
+          generate_release_notes: true
